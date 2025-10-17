@@ -9,7 +9,8 @@ var fizzBuzzRules = new List<Rule>
 };
 
 var fizzBuzzGame = new RuleEngine(fizzBuzzRules);
-fizzBuzzGame.Run(1, 100);
+var fizzBuzzSequence = fizzBuzzGame.GenerateSequence(1, 100);
+fizzBuzzSequence.ForEach(x => Console.WriteLine(x));
 
 Console.WriteLine("\n=== JazzFuzz (100 to 1) ===");
 
@@ -18,6 +19,7 @@ var customRules = new List<Rule>
     new Rule(9, "Jazz"),
     new Rule(4, "Fuzz")
 };
-
 var ruleEngine = new RuleEngine(customRules);
-ruleEngine.Run(100, 1);
+
+var jazzFuzzSequence = ruleEngine.GenerateSequence(100, 1);
+jazzFuzzSequence.ForEach(x => Console.WriteLine(x));

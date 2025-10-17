@@ -9,21 +9,28 @@
             _rules = rules.ToList();
         }
 
-        public void Run(int start, int end)
+        public List<string> GenerateSequence(int start, int end)
         {
+            if (!_rules.Any())
+                throw new InvalidOperationException("No rules to apply. Please add at least 1 rule");
+
             if (start < 0 || end < 0)
                 throw new ArgumentException("Start and end values must non-negative integers.");
+
+            var sequence = new List<string>();
 
             if (start <= end)
             {
                 for (int i = start; i <= end; i++)
-                    Console.WriteLine(ApplyRules(i));
+                    sequence.Add(ApplyRules(i));
             }
             else
             {
                 for (int i = start; i >= end; i--)
-                    Console.WriteLine(ApplyRules(i));
+                    sequence.Add(ApplyRules(i));
             }
+
+            return sequence;
         }
 
         private string ApplyRules(int number)
