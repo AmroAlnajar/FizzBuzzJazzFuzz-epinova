@@ -1,2 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using FizzBuzz.Game;
+
+var game = new FizzBuzzGame();
+game.Run(1, 100);
