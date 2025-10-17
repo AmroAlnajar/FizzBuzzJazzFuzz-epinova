@@ -12,7 +12,7 @@ namespace JazzFuzz.Game
             _httpClient = httpClient ?? new HttpClient();
         }
 
-        public async Task PlayAsync(int start, int end)
+        public async Task<List<string>> GetCustomSequence(int start, int end)
         {
             var rules = await _httpClient.GetFromJsonAsync<List<Rule>>(url) ?? new List<Rule>();
 
@@ -21,8 +21,11 @@ namespace JazzFuzz.Game
 
             PrintRules(rules);
 
-            var game = new RuleEngine(rules);
-            game.Run(start, end);
+            var gameEngine = new RuleEngine(rules);
+
+            var generatedSequence = gameEngine.GenerateSequence(start, end);
+
+            return generatedSequence;
         }
 
         private void PrintRules(IEnumerable<Rule> rules)
