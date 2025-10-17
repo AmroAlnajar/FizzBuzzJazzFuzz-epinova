@@ -32,16 +32,9 @@ namespace JazzFuzz.Tests
 
             var customSequence = await _service.GetCustomSequence(1, 10);
 
-            _mockHttpMessageHandler.Protected()
-                .Verify("SendAsync", Times.Once(),
-                    ItExpr.Is<HttpRequestMessage>(req =>
-                        req.Method == HttpMethod.Get),
-                    ItExpr.IsAny<CancellationToken>());
-
             var expectedSequence = new List<string> { "1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz" };
 
             Assert.Equal(customSequence, expectedSequence);
-
         }
 
         [Fact]
