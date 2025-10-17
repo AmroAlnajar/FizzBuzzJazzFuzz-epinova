@@ -4,72 +4,85 @@ namespace JazzFuzz.Tests
 {
     public class RuleEngineTests
     {
-        [Theory]
-        [InlineData(4, 4, "Fuzz")]
-        [InlineData(9, 9, "Jazz")]
-        [InlineData(72, 72, "JazzFuzz")]
-        public void Test_Single_Number(int start, int end, string expectedOutput)
+        private readonly IEnumerable<Rule> _testRules = new List<Rule>
         {
-            var customRules = new List<Rule>
-            {
-                new Rule(9, "Jazz"),
-                new Rule(4, "Fuzz")
-            };
-
-            var ruleEngine = new RuleEngine(customRules);
-
-            var sw = new StringWriter();
-            Console.SetOut(sw);
-            ruleEngine.Run(start, end);
-
-            var result = sw.ToString().Trim();
-
-            Assert.Equal(expectedOutput, result);
-        }
-
-
+            new Rule (3, "Fizz"),
+            new Rule (5, "Buzz"),
+            new Rule (7, "Jazz")
+        };
 
         [Fact]
-        public void Test_Sequence()
+        public void GenerateSequence_AscendingSequence()
         {
-            var customRules = new List<Rule>
-            {
-                new Rule(9, "Jazz"),
-                new Rule(4, "Fuzz")
-            };
+            var ruleEngine = new RuleEngine(_testRules);
 
-            var ruleEngine = new RuleEngine(customRules);
+            var result = ruleEngine.GenerateSequence(1, 5);
 
-            var sw = new StringWriter();
-            Console.SetOut(sw);
-            ruleEngine.Run(100, 70);
-
-            var outputLines = sw.ToString().Trim()
-                    .Split(Environment.NewLine);
-
-
-            string[] expectedOutput = new string[]
-            { "Fuzz", "Jazz", "98", "97", "Fuzz", "95", "94", "93", 
-                "Fuzz", "91", "Jazz", "89", "Fuzz", "87", "86", "85", 
-                "Fuzz", "83", "82", "Jazz", "Fuzz", "79", "78", "77", 
-                "Fuzz", "75", "74", "73", "JazzFuzz", "71", "70"};
-
-            Assert.Equal(expectedOutput, outputLines);
+            var expected = new List<string> { "1", "2", "Fizz", "4", "Buzz" };
+            Assert.Equal(expected, result);
         }
 
         [Fact]
-        public void Test_invalid_input()
+        public void GenerateSequence_DescendingSequence()
         {
-            var customRules = new List<Rule>
-            {
-                new Rule(9, "Jazz"),
-                new Rule(4, "Fuzz")
-            };
+            var ruleEngine = new RuleEngine(_testRules);
 
-            var ruleEngine = new RuleEngine(customRules);
+            var result = ruleEngine.GenerateSequence(5, 1);
 
-            Assert.Throws<ArgumentException>(() => ruleEngine.Run(-1, 5));
-            Assert.Throws<ArgumentException>(() => ruleEngine.Run(1, -5));
+            var expected = new List<string> { "Buzz", "4", "Fizz", "2", "1" };
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void GenerateSequence_Single_Number()
+        {
+            var ruleEngine = new RuleEngine(_testRules);
+
+            var result = ruleEngine.GenerateSequence(15, 15);
+
+            var expected = new List<string> { "FizzBuzz" };
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void GenerateSequence_StartAndEndZero_SingleZero()
+        {
+            var ruleEngine = new RuleEngine(_testRules);
+            int start = 0;
+            int end = 0;
+
+            var result = ruleEngine.GenerateSequence(start, end);
+
+
+            // 0 is divisible by all numbers, all rules apply.
+            var expected = new List<string> { "FizzBuzzJazz" };
+            
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void GenerateSequence_NegativeStart_ThrowsArgumentException()
+        {
+            var ruleEngine = new RuleEngine(_testRules);
+
+            Assert.Throws<ArgumentException>(() => ruleEngine.GenerateSequence(-1, 5));
+        }
+
+        [Fact]
+        public void GenerateSequence_NegativeEnd_ThrowsArgumentException()
+        {
+            var ruleEngine = new RuleEngine(_testRules);
+
+            Assert.Throws<ArgumentException>(() => ruleEngine.GenerateSequence(1, -5));
+        }
+
+        [Fact]
+        public void GenerateSequence_EmptyRules_ThrowsInvalidOperationException()
+        {
+            var ruleEngine = new RuleEngine(new List<Rule>());
+
+            Assert.Throws<InvalidOperationException>(() => ruleEngine.GenerateSequence(1, 3));
         }
     }
 }
