@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace JazzFuzz.Game
 {
@@ -14,7 +15,20 @@ namespace JazzFuzz.Game
 
         public async Task<List<string>> GetCustomSequence(int start, int end)
         {
-            var rules = await _httpClient.GetFromJsonAsync<List<Rule>>(url) ?? new List<Rule>();
+            List<Rule> rules;
+
+            try
+            {
+                rules = await _httpClient.GetFromJsonAsync<List<Rule>>(url) ?? new List<Rule>();
+
+            }
+            catch (HttpRequestException e)
+            {
+
+                throw new HttpRequestException("Failed to retrieve rules from server (HTTP error).", e);
+
+            }
+
 
             if (!rules.Any())
                 throw new ArgumentException("No rules found in API", nameof(rules));
