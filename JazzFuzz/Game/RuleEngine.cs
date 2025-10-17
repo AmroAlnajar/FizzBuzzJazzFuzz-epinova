@@ -1,10 +1,10 @@
 ﻿namespace JazzFuzz.Game
 {
-    public class JazzFuzzGame
+    public class RuleEngine
     {
         private readonly List<Rule> _rules;
 
-        public JazzFuzzGame(IEnumerable<Rule> rules)
+        public RuleEngine(IEnumerable<Rule> rules)
         {
             _rules = rules.ToList();
         }
@@ -32,10 +32,8 @@
 
             foreach (var rule in _rules)
             {
-
                 if (number % rule.Number == 0)
                     result += rule.Word;
-
             }
 
             return string.IsNullOrEmpty(result) ? number.ToString() : result;

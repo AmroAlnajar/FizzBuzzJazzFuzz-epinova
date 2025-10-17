@@ -8,16 +8,16 @@ var fizzBuzzRules = new List<Rule>
     new Rule(5, "Buzz")
 };
 
-var fizzBuzzGame = new JazzFuzzGame(fizzBuzzRules);
+var fizzBuzzGame = new RuleEngine(fizzBuzzRules);
 fizzBuzzGame.Run(1, 100);
 
 Console.WriteLine("\n=== JazzFuzz (100 to 1) ===");
 
-var jazzFuzzRules = new List<Rule>
+var customRules = new List<Rule>
 {
     new Rule(9, "Jazz"),
     new Rule(4, "Fuzz")
 };
 
-var JazzFuzzGame = new JazzFuzzGame(jazzFuzzRules);
-JazzFuzzGame.Run(100, 1);
+var ruleEngine = new RuleEngine(customRules);
+ruleEngine.Run(100, 1);

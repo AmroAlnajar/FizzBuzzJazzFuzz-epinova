@@ -2,7 +2,7 @@ using JazzFuzz.Game;
 
 namespace JazzFuzz.Tests
 {
-    public class JazzFuzzGameTests
+    public class RuleEngineTests
     {
         [Theory]
         [InlineData(4, 4, "Fuzz")]
@@ -10,17 +10,17 @@ namespace JazzFuzz.Tests
         [InlineData(72, 72, "JazzFuzz")]
         public void Test_Single_Number(int start, int end, string expectedOutput)
         {
-            var jazzFuzzRules = new List<Rule>
+            var customRules = new List<Rule>
             {
                 new Rule(9, "Jazz"),
                 new Rule(4, "Fuzz")
             };
 
-            var jazzFuzzGame = new JazzFuzzGame(jazzFuzzRules);
+            var ruleEngine = new RuleEngine(customRules);
 
             var sw = new StringWriter();
             Console.SetOut(sw);
-            jazzFuzzGame.Run(start, end);
+            ruleEngine.Run(start, end);
 
             var result = sw.ToString().Trim();
 
@@ -32,17 +32,17 @@ namespace JazzFuzz.Tests
         [Fact]
         public void Test_Sequence()
         {
-            var jazzFuzzRules = new List<Rule>
+            var customRules = new List<Rule>
             {
                 new Rule(9, "Jazz"),
                 new Rule(4, "Fuzz")
             };
 
-            var jazzFuzzGame = new JazzFuzzGame(jazzFuzzRules);
+            var ruleEngine = new RuleEngine(customRules);
 
             var sw = new StringWriter();
             Console.SetOut(sw);
-            jazzFuzzGame.Run(100, 70);
+            ruleEngine.Run(100, 70);
 
             var outputLines = sw.ToString().Trim()
                     .Split(Environment.NewLine);
@@ -60,16 +60,16 @@ namespace JazzFuzz.Tests
         [Fact]
         public void Test_invalid_input()
         {
-            var jazzFuzzRules = new List<Rule>
+            var customRules = new List<Rule>
             {
                 new Rule(9, "Jazz"),
                 new Rule(4, "Fuzz")
             };
 
-            var jazzFuzzGame = new JazzFuzzGame(jazzFuzzRules);
+            var ruleEngine = new RuleEngine(customRules);
 
-            Assert.Throws<ArgumentException>(() => jazzFuzzGame.Run(-1, 5));
-            Assert.Throws<ArgumentException>(() => jazzFuzzGame.Run(1, -5));
+            Assert.Throws<ArgumentException>(() => ruleEngine.Run(-1, 5));
+            Assert.Throws<ArgumentException>(() => ruleEngine.Run(1, -5));
         }
     }
 }
