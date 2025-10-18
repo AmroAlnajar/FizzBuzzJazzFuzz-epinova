@@ -2,18 +2,21 @@
 {
     public class RuleEngine
     {
-        private readonly List<Rule> _rules;
+        private readonly IEnumerable<Rule> _rules;
 
         public RuleEngine(IEnumerable<Rule> rules)
         {
-            _rules = rules.ToList();
+            _rules = rules;
+
+            if (!_rules.Any())
+                throw new InvalidOperationException("No rules to apply. Please add at least 1 rule");
+
+            if (_rules.Any(x => string.IsNullOrWhiteSpace(x.Word)))
+                throw new ArgumentException("Rules must have a non-empty word.");
         }
 
         public List<string> GenerateSequence(int start, int end)
         {
-            if (!_rules.Any())
-                throw new InvalidOperationException("No rules to apply. Please add at least 1 rule");
-
             if (start < 0 || end < 0)
                 throw new ArgumentException("Start and end values must non-negative integers.");
 

@@ -49,11 +49,8 @@ namespace JazzFuzz.Tests
         public void GenerateSequence_StartAndEndZero_SingleZero()
         {
             var ruleEngine = new RuleEngine(_testRules);
-            int start = 0;
-            int end = 0;
 
-            var result = ruleEngine.GenerateSequence(start, end);
-
+            var result = ruleEngine.GenerateSequence(0, 0);
 
             // 0 is divisible by all numbers, all rules apply.
             var expected = new List<string> { "FizzBuzzJazz" };
@@ -80,9 +77,25 @@ namespace JazzFuzz.Tests
         [Fact]
         public void GenerateSequence_EmptyRules_ThrowsInvalidOperationException()
         {
-            var ruleEngine = new RuleEngine(new List<Rule>());
+            Assert.Throws<InvalidOperationException>(() => new RuleEngine(new List<Rule>()));
+        }
 
-            Assert.Throws<InvalidOperationException>(() => ruleEngine.GenerateSequence(1, 3));
+        [Fact]
+        public void GenerateSequence_RulesIsNull_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => new RuleEngine(null));
+        }
+
+        [Fact]
+        public void GenerateSequence_RulesWithEmptyWords_ThrowsArgumentException()
+        {
+            var rules = new List<Rule>
+            {
+                new Rule(1,""),
+            };
+
+            Assert.Throws<ArgumentException>(() => new RuleEngine(rules));
+
         }
     }
 }
