@@ -24,7 +24,7 @@ var ruleEngine = new RuleEngine(customRules);
 var jazzFuzzSequence = ruleEngine.GenerateSequence(100, 1);
 jazzFuzzSequence.ForEach(x => Console.WriteLine(x));
 
-Console.WriteLine("\n=== Custom rules (1 to 100) ===");
+Console.WriteLine("\n=== Custom rules from API (1 to 100) ===");
 
 var dynamicRulesService = new DynamicRulesService();
 
