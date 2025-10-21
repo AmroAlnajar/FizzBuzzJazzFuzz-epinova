@@ -20,15 +20,11 @@ namespace JazzFuzz.Game
             try
             {
                 rules = await _httpClient.GetFromJsonAsync<List<Rule>>(url) ?? new List<Rule>();
-
             }
             catch (HttpRequestException e)
             {
-
                 throw new HttpRequestException("Failed to retrieve rules from server (HTTP error).", e);
-
             }
-
 
             if (!rules.Any())
                 throw new ArgumentException("No rules found in API", nameof(rules));

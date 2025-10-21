@@ -51,6 +51,20 @@ namespace JazzFuzz.Tests
             await Assert.ThrowsAsync<HttpRequestException>(() => _service.GetCustomSequence(1, 10));
         }
 
+        [Fact]
+        public async Task GetCustomSequence_NegativeStartNumber_ThrowsArgumentException()
+        {
+            var expectedRules = new List<Rule>
+            {
+                new Rule (3, "Fizz"),
+                new Rule (5, "Buzz")
+            };
+
+            SetupHttpResponse(HttpStatusCode.OK, expectedRules);
+
+           await Assert.ThrowsAsync<ArgumentException>(() => _service.GetCustomSequence(-100, 500));
+        }
+
         private void SetupHttpResponse(HttpStatusCode statusCode, object? content)
         {
             var response = new HttpResponseMessage
