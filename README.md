@@ -12,6 +12,7 @@ My implementation of the FizzBuzz game with advanced features like dynamic rules
 ## Project Structure
 
 - `Game/` - Core game logic and rule processing
+  - `DynamicRulesService.cs` - External API integration for rules
   - `RuleEngine.cs` - Main sequence generation logic
   - `Rule.cs` - Rule model and validation
 - `Tests/` - Unit tests
@@ -30,6 +31,10 @@ var fizzBuzzGame = new RuleEngine(fizzBuzzRules);
 var fizzBuzzSequence = fizzBuzzGame.GenerateSequence(1, 100);
 fizzBuzzSequence.ForEach(x => Console.WriteLine(x));
 
+// Using dynamic rules from API
+var dynamicRulesService = new DynamicRulesService();
+var customSequence = await dynamicRulesService.GetCustomSequence(1, 100);
+customSequence.ForEach(x => Console.WriteLine(x));
 ```
 
 ## Running the project
