@@ -15,6 +15,13 @@
                 throw new ArgumentException("Rules must have a non-empty word.");
         }
 
+        /// <summary>
+        /// Generates a sequence of strings based on the defined rules within the specified range.
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public List<string> GenerateSequence(int start, int end)
         {
             if (start < 0 || end < 0)
@@ -36,6 +43,11 @@
             return sequence;
         }
 
+        /// <summary>
+        /// Applies the defined rule to a given number and returns the resulting string.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         private string ApplyRules(int number)
         {
             string result = string.Empty;
